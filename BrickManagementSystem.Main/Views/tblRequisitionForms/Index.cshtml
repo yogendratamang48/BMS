@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BrickManagementSystem.Main.Models.tblRequisitionForm>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="page-inner">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>माग फारम सुरुवात गर्नुहोस् ।</h2>
+        </div>
+    </div>
+    <!-- /. ROW  -->
+    <hr />
+
+    <p>
+        @Html.ActionLink("नयाँ माग फारम", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+               माग फारम भर्नेको नाम
+            </th>
+            <th>
+              माग फारम भर्नुको उद्देश्य
+            </th>
+            <th>
+               मिति
+            </th>
+            <th>
+                बुझिलिने व्यक्ति
+            </th>
+            <th>
+               कम्पनीको नाम
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Purpose)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mstCompanyInfo.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ReqID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ReqID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ReqID })
+            </td>
+        </tr>
+        }
+
+    </table>
+    </div>

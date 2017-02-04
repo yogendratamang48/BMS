@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BrickManagementDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="mstCompanyInfo">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="200" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="Contact" Type="nchar" MaxLength="20" />
+          <Property Name="PAN" Type="nchar" MaxLength="20" />
+          <Property Name="VAT" Type="nchar" MaxLength="20" />
+          <Property Name="Note" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="tblItemInfo">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReqID" Type="int" />
+          <Property Name="KhataNumber" Type="nchar" MaxLength="20" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Unit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="tblItemsFromStock">
+          <Key>
+            <PropertyRef Name="ItemsFromStockID" />
+          </Key>
+          <Property Name="ItemsFromStockID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="int" />
+          <Property Name="SupplyQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="tblRequisitionForm">
+          <Key>
+            <PropertyRef Name="ReqID" />
+          </Key>
+          <Property Name="ReqID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Purpose" Type="nvarchar" MaxLength="200" />
+          <Property Name="RequestedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="tblStock">
+          <Key>
+            <PropertyRef Name="StockID" />
+          </Key>
+          <Property Name="StockID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReqID" Type="int" />
+          <Property Name="RequestState" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Unit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+          <Property Name="RespondedDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_tblItemInfo_ToReq">
+          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
+          <End Role="tblItemInfo" Type="Self.tblItemInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRequisitionForm">
+              <PropertyRef Name="ReqID" />
+            </Principal>
+            <Dependent Role="tblItemInfo">
+              <PropertyRef Name="ReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblItemsFromStock_ToTable">
+          <End Role="tblItemInfo" Type="Self.tblItemInfo" Multiplicity="0..1" />
+          <End Role="tblItemsFromStock" Type="Self.tblItemsFromStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblItemInfo">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="tblItemsFromStock">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblRequisitionForm_ToCompanyInfo">
+          <End Role="mstCompanyInfo" Type="Self.mstCompanyInfo" Multiplicity="0..1" />
+          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mstCompanyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="tblRequisitionForm">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStock_ToReq">
+          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
+          <End Role="tblStock" Type="Self.tblStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRequisitionForm">
+              <PropertyRef Name="ReqID" />
+            </Principal>
+            <Dependent Role="tblStock">
+              <PropertyRef Name="ReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BrickManagementDBModelStoreContainer">
+          <EntitySet Name="mstCompanyInfo" EntityType="Self.mstCompanyInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblItemInfo" EntityType="Self.tblItemInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblItemsFromStock" EntityType="Self.tblItemsFromStock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRequisitionForm" EntityType="Self.tblRequisitionForm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStock" EntityType="Self.tblStock" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblItemInfo_ToReq" Association="Self.FK_tblItemInfo_ToReq">
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForm" />
+            <End Role="tblItemInfo" EntitySet="tblItemInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblItemsFromStock_ToTable" Association="Self.FK_tblItemsFromStock_ToTable">
+            <End Role="tblItemInfo" EntitySet="tblItemInfo" />
+            <End Role="tblItemsFromStock" EntitySet="tblItemsFromStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRequisitionForm_ToCompanyInfo" Association="Self.FK_tblRequisitionForm_ToCompanyInfo">
+            <End Role="mstCompanyInfo" EntitySet="mstCompanyInfo" />
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStock_ToReq" Association="Self.FK_tblStock_ToReq">
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForm" />
+            <End Role="tblStock" EntitySet="tblStock" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BrickManagementDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="mstCompanyInfo">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Branch" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="PAN" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="VAT" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblRequisitionForms" Relationship="Self.FK_tblRequisitionForm_ToCompanyInfo" FromRole="mstCompanyInfo" ToRole="tblRequisitionForm" />
+        </EntityType>
+        <EntityType Name="tblItemInfo">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReqID" Type="Int32" />
+          <Property Name="KhataNumber" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="ItemName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Unit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblRequisitionForm" Relationship="Self.FK_tblItemInfo_ToReq" FromRole="tblItemInfo" ToRole="tblRequisitionForm" />
+          <NavigationProperty Name="tblItemsFromStocks" Relationship="Self.FK_tblItemsFromStock_ToTable" FromRole="tblItemInfo" ToRole="tblItemsFromStock" />
+        </EntityType>
+        <EntityType Name="tblItemsFromStock">
+          <Key>
+            <PropertyRef Name="ItemsFromStockID" />
+          </Key>
+          <Property Name="ItemsFromStockID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int32" />
+          <Property Name="SupplyQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblItemInfo" Relationship="Self.FK_tblItemsFromStock_ToTable" FromRole="tblItemsFromStock" ToRole="tblItemInfo" />
+        </EntityType>
+        <EntityType Name="tblRequisitionForm">
+          <Key>
+            <PropertyRef Name="ReqID" />
+          </Key>
+          <Property Name="ReqID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="EmployeeName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Purpose" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RequestedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="mstCompanyInfo" Relationship="Self.FK_tblRequisitionForm_ToCompanyInfo" FromRole="tblRequisitionForm" ToRole="mstCompanyInfo" />
+          <NavigationProperty Name="tblItemInfoes" Relationship="Self.FK_tblItemInfo_ToReq" FromRole="tblRequisitionForm" ToRole="tblItemInfo" />
+          <NavigationProperty Name="tblStocks" Relationship="Self.FK_tblStock_ToReq" FromRole="tblRequisitionForm" ToRole="tblStock" />
+        </EntityType>
+        <EntityType Name="tblStock">
+          <Key>
+            <PropertyRef Name="StockID" />
+          </Key>
+          <Property Name="StockID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReqID" Type="Int32" />
+          <Property Name="RequestState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Unit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RespondedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblRequisitionForm" Relationship="Self.FK_tblStock_ToReq" FromRole="tblStock" ToRole="tblRequisitionForm" />
+        </EntityType>
+        <Association Name="FK_tblRequisitionForm_ToCompanyInfo">
+          <End Role="mstCompanyInfo" Type="Self.mstCompanyInfo" Multiplicity="0..1" />
+          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mstCompanyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="tblRequisitionForm">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblItemInfo_ToReq">
+          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
+          <End Role="tblItemInfo" Type="Self.tblItemInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRequisitionForm">
+              <PropertyRef Name="ReqID" />
+            </Principal>
+            <Dependent Role="tblItemInfo">
+              <PropertyRef Name="ReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblItemsFromStock_ToTable">
+          <End Role="tblItemInfo" Type="Self.tblItemInfo" Multiplicity="0..1" />
+          <End Role="tblItemsFromStock" Type="Self.tblItemsFromStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblItemInfo">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="tblItemsFromStock">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStock_ToReq">
+          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
+          <End Role="tblStock" Type="Self.tblStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRequisitionForm">
+              <PropertyRef Name="ReqID" />
+            </Principal>
+            <Dependent Role="tblStock">
+              <PropertyRef Name="ReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BrickManagementDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="mstCompanyInfoes" EntityType="Self.mstCompanyInfo" />
+          <EntitySet Name="tblItemInfoes" EntityType="Self.tblItemInfo" />
+          <EntitySet Name="tblItemsFromStocks" EntityType="Self.tblItemsFromStock" />
+          <EntitySet Name="tblRequisitionForms" EntityType="Self.tblRequisitionForm" />
+          <EntitySet Name="tblStocks" EntityType="Self.tblStock" />
+          <AssociationSet Name="FK_tblRequisitionForm_ToCompanyInfo" Association="Self.FK_tblRequisitionForm_ToCompanyInfo">
+            <End Role="mstCompanyInfo" EntitySet="mstCompanyInfoes" />
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblItemInfo_ToReq" Association="Self.FK_tblItemInfo_ToReq">
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
+            <End Role="tblItemInfo" EntitySet="tblItemInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblItemsFromStock_ToTable" Association="Self.FK_tblItemsFromStock_ToTable">
+            <End Role="tblItemInfo" EntitySet="tblItemInfoes" />
+            <End Role="tblItemsFromStock" EntitySet="tblItemsFromStocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStock_ToReq" Association="Self.FK_tblStock_ToReq">
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
+            <End Role="tblStock" EntitySet="tblStocks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BrickManagementDBModelStoreContainer" CdmEntityContainer="BrickManagementDBEntities">
+          <EntitySetMapping Name="mstCompanyInfoes">
+            <EntityTypeMapping TypeName="BrickManagementDBModel.mstCompanyInfo">
+              <MappingFragment StoreEntitySet="mstCompanyInfo">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblItemInfoes">
+            <EntityTypeMapping TypeName="BrickManagementDBModel.tblItemInfo">
+              <MappingFragment StoreEntitySet="tblItemInfo">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ReqID" ColumnName="ReqID" />
+                <ScalarProperty Name="KhataNumber" ColumnName="KhataNumber" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblItemsFromStocks">
+            <EntityTypeMapping TypeName="BrickManagementDBModel.tblItemsFromStock">
+              <MappingFragment StoreEntitySet="tblItemsFromStock">
+                <ScalarProperty Name="ItemsFromStockID" ColumnName="ItemsFromStockID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="SupplyQuantity" ColumnName="SupplyQuantity" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRequisitionForms">
+            <EntityTypeMapping TypeName="BrickManagementDBModel.tblRequisitionForm">
+              <MappingFragment StoreEntitySet="tblRequisitionForm">
+                <ScalarProperty Name="ReqID" ColumnName="ReqID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+                <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStocks">
+            <EntityTypeMapping TypeName="BrickManagementDBModel.tblStock">
+              <MappingFragment StoreEntitySet="tblStock">
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
+                <ScalarProperty Name="ReqID" ColumnName="ReqID" />
+                <ScalarProperty Name="RequestState" ColumnName="RequestState" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="RespondedDate" ColumnName="RespondedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

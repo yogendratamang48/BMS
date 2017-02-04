@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cd8c87328848436489c87fe5b20d1a21" Name="Diagram1">
+        <EntityTypeShape EntityType="BrickManagementDBModel.mstCompanyInfo" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BrickManagementDBModel.tblItemInfo" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BrickManagementDBModel.tblItemsFromStock" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BrickManagementDBModel.tblRequisitionForm" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BrickManagementDBModel.tblStock" Width="1.5" PointX="5.25" PointY="4.625" IsExpanded="true" />
+        <AssociationConnector Association="BrickManagementDBModel.FK_tblRequisitionForm_ToCompanyInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="BrickManagementDBModel.FK_tblItemInfo_ToReq" ManuallyRouted="false" />
+        <AssociationConnector Association="BrickManagementDBModel.FK_tblItemsFromStock_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="BrickManagementDBModel.FK_tblStock_ToReq" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
