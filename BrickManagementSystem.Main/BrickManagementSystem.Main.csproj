@@ -197,6 +197,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\tblItemInfoesController.cs" />
     <Compile Include="Controllers\tblRequisitionFormsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -218,10 +219,14 @@
       <DependentUpon>BMSMainModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IncomingDemand.cs">
+      <DependentUpon>BMSMainModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\mstCompanyInfo.cs">
       <DependentUpon>BMSMainModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReqFormViewModel.cs" />
     <Compile Include="Models\tblItemInfo.cs">
       <DependentUpon>BMSMainModel.tt</DependentUpon>
     </Compile>
@@ -312,6 +317,13 @@
     <Content Include="Views\tblRequisitionForms\Details.cshtml" />
     <Content Include="Views\tblRequisitionForms\Edit.cshtml" />
     <Content Include="Views\tblRequisitionForms\Index.cshtml" />
+    <Content Include="Views\tblRequisitionForms\ReqTest.cshtml" />
+    <Content Include="Views\tblItemInfoes\Create.cshtml" />
+    <Content Include="Views\tblItemInfoes\Delete.cshtml" />
+    <Content Include="Views\tblItemInfoes\Details.cshtml" />
+    <Content Include="Views\tblItemInfoes\Edit.cshtml" />
+    <Content Include="Views\tblItemInfoes\Index.cshtml" />
+    <Content Include="Views\tblItemInfoes\ShowItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

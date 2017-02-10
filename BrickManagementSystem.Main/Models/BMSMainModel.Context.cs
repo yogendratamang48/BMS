@@ -30,5 +30,6 @@ namespace BrickManagementSystem.Main.Models
         public virtual DbSet<tblItemsFromStock> tblItemsFromStocks { get; set; }
         public virtual DbSet<tblRequisitionForm> tblRequisitionForms { get; set; }
         public virtual DbSet<tblStock> tblStocks { get; set; }
+        public virtual DbSet<IncomingDemand> IncomingDemands { get; set; }
     }
 }

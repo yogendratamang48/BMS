@@ -4,7 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BrickManagementDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BrickManagementDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="IncomingDemand">
+          <Key>
+            <PropertyRef Name="IncomingDemandID" />
+          </Key>
+          <Property Name="IncomingDemandID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReqID" Type="int" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" />
+          <Property Name="Note" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="mstCompanyInfo">
           <Key>
             <PropertyRef Name="CompanyID" />
@@ -63,6 +72,18 @@
           <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
           <Property Name="RespondedDate" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Table_ToTable">
+          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
+          <End Role="IncomingDemand" Type="Self.IncomingDemand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRequisitionForm">
+              <PropertyRef Name="ReqID" />
+            </Principal>
+            <Dependent Role="IncomingDemand">
+              <PropertyRef Name="ReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblItemInfo_ToReq">
           <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
           <End Role="tblItemInfo" Type="Self.tblItemInfo" Multiplicity="*" />
@@ -112,11 +133,16 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BrickManagementDBModelStoreContainer">
+          <EntitySet Name="IncomingDemand" EntityType="Self.IncomingDemand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mstCompanyInfo" EntityType="Self.mstCompanyInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblItemInfo" EntityType="Self.tblItemInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblItemsFromStock" EntityType="Self.tblItemsFromStock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRequisitionForm" EntityType="Self.tblRequisitionForm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStock" EntityType="Self.tblStock" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Table_ToTable" Association="Self.FK_Table_ToTable">
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForm" />
+            <End Role="IncomingDemand" EntitySet="IncomingDemand" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblItemInfo_ToReq" Association="Self.FK_tblItemInfo_ToReq">
             <End Role="tblRequisitionForm" EntitySet="tblRequisitionForm" />
             <End Role="tblItemInfo" EntitySet="tblItemInfo" />
@@ -134,8 +160,7 @@
             <End Role="tblStock" EntitySet="tblStock" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BrickManagementDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -190,6 +215,7 @@
           <NavigationProperty Name="mstCompanyInfo" Relationship="Self.FK_tblRequisitionForm_ToCompanyInfo" FromRole="tblRequisitionForm" ToRole="mstCompanyInfo" />
           <NavigationProperty Name="tblItemInfoes" Relationship="Self.FK_tblItemInfo_ToReq" FromRole="tblRequisitionForm" ToRole="tblItemInfo" />
           <NavigationProperty Name="tblStocks" Relationship="Self.FK_tblStock_ToReq" FromRole="tblRequisitionForm" ToRole="tblStock" />
+          <NavigationProperty Name="IncomingDemands" Relationship="BrickManagementDBModel.FK_Table_ToTable" FromRole="tblRequisitionForm" ToRole="IncomingDemand" />
         </EntityType>
         <EntityType Name="tblStock">
           <Key>
@@ -275,7 +301,34 @@
             <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
             <End Role="tblStock" EntitySet="tblStocks" />
           </AssociationSet>
+          <EntitySet Name="IncomingDemands" EntityType="BrickManagementDBModel.IncomingDemand" />
+          <AssociationSet Name="FK_Table_ToTable" Association="BrickManagementDBModel.FK_Table_ToTable">
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
+            <End Role="IncomingDemand" EntitySet="IncomingDemands" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="IncomingDemand">
+          <Key>
+            <PropertyRef Name="IncomingDemandID" />
+          </Key>
+          <Property Name="IncomingDemandID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReqID" Type="Int32" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblRequisitionForm" Relationship="BrickManagementDBModel.FK_Table_ToTable" FromRole="IncomingDemand" ToRole="tblRequisitionForm" />
+        </EntityType>
+        <Association Name="FK_Table_ToTable">
+          <End Type="BrickManagementDBModel.tblRequisitionForm" Role="tblRequisitionForm" Multiplicity="0..1" />
+          <End Type="BrickManagementDBModel.IncomingDemand" Role="IncomingDemand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRequisitionForm">
+              <PropertyRef Name="ReqID" />
+            </Principal>
+            <Dependent Role="IncomingDemand">
+              <PropertyRef Name="ReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -342,6 +395,16 @@
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="RespondedDate" ColumnName="RespondedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncomingDemands">
+            <EntityTypeMapping TypeName="BrickManagementDBModel.IncomingDemand">
+              <MappingFragment StoreEntitySet="IncomingDemand">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ReqID" ColumnName="ReqID" />
+                <ScalarProperty Name="IncomingDemandID" ColumnName="IncomingDemandID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -39,6 +39,7 @@ namespace BrickManagementSystem.Main.Controllers
         // GET: tblRequisitionForms/Create
         public ActionResult Create()
         {
+
             ViewBag.CompanyID = new SelectList(db.mstCompanyInfoes, "CompanyID", "Name");
             return View();
         }
@@ -54,7 +55,7 @@ namespace BrickManagementSystem.Main.Controllers
             {
                 db.tblRequisitionForms.Add(tblRequisitionForm);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create", "tblItemInfoes", new { reqID = tblRequisitionForm.ReqID });
             }
 
             ViewBag.CompanyID = new SelectList(db.mstCompanyInfoes, "CompanyID", "Name", tblRequisitionForm.CompanyID);
@@ -116,6 +117,15 @@ namespace BrickManagementSystem.Main.Controllers
         {
             tblRequisitionForm tblRequisitionForm = db.tblRequisitionForms.Find(id);
             db.tblRequisitionForms.Remove(tblRequisitionForm);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult SubmitToRequisition(int? reqID) {
+
+            IncomingDemand incomingDemand = new IncomingDemand { ReqID = reqID };
+            db.IncomingDemands.Add(incomingDemand);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
