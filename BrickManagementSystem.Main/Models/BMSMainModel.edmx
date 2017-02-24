@@ -36,7 +36,7 @@
           <Property Name="KhataNumber" Type="nchar" MaxLength="20" />
           <Property Name="ItemName" Type="nvarchar" MaxLength="200" />
           <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Unit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tblItemsFromStock">
@@ -178,20 +178,6 @@
           <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblRequisitionForms" Relationship="Self.FK_tblRequisitionForm_ToCompanyInfo" FromRole="mstCompanyInfo" ToRole="tblRequisitionForm" />
         </EntityType>
-        <EntityType Name="tblItemInfo">
-          <Key>
-            <PropertyRef Name="ItemID" />
-          </Key>
-          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReqID" Type="Int32" />
-          <Property Name="KhataNumber" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="ItemName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Quantity" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Unit" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tblRequisitionForm" Relationship="Self.FK_tblItemInfo_ToReq" FromRole="tblItemInfo" ToRole="tblRequisitionForm" />
-          <NavigationProperty Name="tblItemsFromStocks" Relationship="Self.FK_tblItemsFromStock_ToTable" FromRole="tblItemInfo" ToRole="tblItemsFromStock" />
-        </EntityType>
         <EntityType Name="tblItemsFromStock">
           <Key>
             <PropertyRef Name="ItemsFromStockID" />
@@ -200,7 +186,7 @@
           <Property Name="ItemID" Type="Int32" />
           <Property Name="SupplyQuantity" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tblItemInfo" Relationship="Self.FK_tblItemsFromStock_ToTable" FromRole="tblItemsFromStock" ToRole="tblItemInfo" />
+          <NavigationProperty Name="tblItemInfo" Relationship="BrickManagementDBModel.FK_tblItemsFromStock_ToTable" FromRole="tblItemsFromStock" ToRole="tblItemInfo" />
         </EntityType>
         <EntityType Name="tblRequisitionForm">
           <Key>
@@ -213,9 +199,9 @@
           <Property Name="RequestedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="mstCompanyInfo" Relationship="Self.FK_tblRequisitionForm_ToCompanyInfo" FromRole="tblRequisitionForm" ToRole="mstCompanyInfo" />
-          <NavigationProperty Name="tblItemInfoes" Relationship="Self.FK_tblItemInfo_ToReq" FromRole="tblRequisitionForm" ToRole="tblItemInfo" />
           <NavigationProperty Name="tblStocks" Relationship="Self.FK_tblStock_ToReq" FromRole="tblRequisitionForm" ToRole="tblStock" />
           <NavigationProperty Name="IncomingDemands" Relationship="BrickManagementDBModel.FK_Table_ToTable" FromRole="tblRequisitionForm" ToRole="IncomingDemand" />
+          <NavigationProperty Name="tblItemInfoes" Relationship="BrickManagementDBModel.FK_tblItemInfo_ToReq" FromRole="tblRequisitionForm" ToRole="tblItemInfo" />
         </EntityType>
         <EntityType Name="tblStock">
           <Key>
@@ -243,30 +229,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblItemInfo_ToReq">
-          <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
-          <End Role="tblItemInfo" Type="Self.tblItemInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblRequisitionForm">
-              <PropertyRef Name="ReqID" />
-            </Principal>
-            <Dependent Role="tblItemInfo">
-              <PropertyRef Name="ReqID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tblItemsFromStock_ToTable">
-          <End Role="tblItemInfo" Type="Self.tblItemInfo" Multiplicity="0..1" />
-          <End Role="tblItemsFromStock" Type="Self.tblItemsFromStock" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblItemInfo">
-              <PropertyRef Name="ItemID" />
-            </Principal>
-            <Dependent Role="tblItemsFromStock">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tblStock_ToReq">
           <End Role="tblRequisitionForm" Type="Self.tblRequisitionForm" Multiplicity="0..1" />
           <End Role="tblStock" Type="Self.tblStock" Multiplicity="*" />
@@ -281,21 +243,12 @@
         </Association>
         <EntityContainer Name="BrickManagementDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="mstCompanyInfoes" EntityType="Self.mstCompanyInfo" />
-          <EntitySet Name="tblItemInfoes" EntityType="Self.tblItemInfo" />
           <EntitySet Name="tblItemsFromStocks" EntityType="Self.tblItemsFromStock" />
           <EntitySet Name="tblRequisitionForms" EntityType="Self.tblRequisitionForm" />
           <EntitySet Name="tblStocks" EntityType="Self.tblStock" />
           <AssociationSet Name="FK_tblRequisitionForm_ToCompanyInfo" Association="Self.FK_tblRequisitionForm_ToCompanyInfo">
             <End Role="mstCompanyInfo" EntitySet="mstCompanyInfoes" />
             <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblItemInfo_ToReq" Association="Self.FK_tblItemInfo_ToReq">
-            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
-            <End Role="tblItemInfo" EntitySet="tblItemInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblItemsFromStock_ToTable" Association="Self.FK_tblItemsFromStock_ToTable">
-            <End Role="tblItemInfo" EntitySet="tblItemInfoes" />
-            <End Role="tblItemsFromStock" EntitySet="tblItemsFromStocks" />
           </AssociationSet>
           <AssociationSet Name="FK_tblStock_ToReq" Association="Self.FK_tblStock_ToReq">
             <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
@@ -305,6 +258,15 @@
           <AssociationSet Name="FK_Table_ToTable" Association="BrickManagementDBModel.FK_Table_ToTable">
             <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
             <End Role="IncomingDemand" EntitySet="IncomingDemands" />
+          </AssociationSet>
+          <EntitySet Name="tblItemInfoes" EntityType="BrickManagementDBModel.tblItemInfo" />
+          <AssociationSet Name="FK_tblItemInfo_ToReq" Association="BrickManagementDBModel.FK_tblItemInfo_ToReq">
+            <End Role="tblRequisitionForm" EntitySet="tblRequisitionForms" />
+            <End Role="tblItemInfo" EntitySet="tblItemInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblItemsFromStock_ToTable" Association="BrickManagementDBModel.FK_tblItemsFromStock_ToTable">
+            <End Role="tblItemInfo" EntitySet="tblItemInfoes" />
+            <End Role="tblItemsFromStock" EntitySet="tblItemsFromStocks" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="IncomingDemand">
@@ -329,6 +291,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblItemInfo">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReqID" Type="Int32" />
+          <Property Name="KhataNumber" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="ItemName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Unit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblRequisitionForm" Relationship="BrickManagementDBModel.FK_tblItemInfo_ToReq" FromRole="tblItemInfo" ToRole="tblRequisitionForm" />
+          <NavigationProperty Name="tblItemsFromStocks" Relationship="BrickManagementDBModel.FK_tblItemsFromStock_ToTable" FromRole="tblItemInfo" ToRole="tblItemsFromStock" />
+        </EntityType>
+        <Association Name="FK_tblItemInfo_ToReq">
+          <End Type="BrickManagementDBModel.tblRequisitionForm" Role="tblRequisitionForm" Multiplicity="0..1" />
+          <End Type="BrickManagementDBModel.tblItemInfo" Role="tblItemInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRequisitionForm">
+              <PropertyRef Name="ReqID" />
+            </Principal>
+            <Dependent Role="tblItemInfo">
+              <PropertyRef Name="ReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblItemsFromStock_ToTable">
+          <End Type="BrickManagementDBModel.tblItemInfo" Role="tblItemInfo" Multiplicity="0..1" />
+          <End Type="BrickManagementDBModel.tblItemsFromStock" Role="tblItemsFromStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblItemInfo">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="tblItemsFromStock">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -346,19 +346,6 @@
                 <ScalarProperty Name="PAN" ColumnName="PAN" />
                 <ScalarProperty Name="VAT" ColumnName="VAT" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblItemInfoes">
-            <EntityTypeMapping TypeName="BrickManagementDBModel.tblItemInfo">
-              <MappingFragment StoreEntitySet="tblItemInfo">
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="ReqID" ColumnName="ReqID" />
-                <ScalarProperty Name="KhataNumber" ColumnName="KhataNumber" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -405,6 +392,19 @@
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="ReqID" ColumnName="ReqID" />
                 <ScalarProperty Name="IncomingDemandID" ColumnName="IncomingDemandID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblItemInfoes">
+            <EntityTypeMapping TypeName="BrickManagementDBModel.tblItemInfo">
+              <MappingFragment StoreEntitySet="tblItemInfo">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="KhataNumber" ColumnName="KhataNumber" />
+                <ScalarProperty Name="ReqID" ColumnName="ReqID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

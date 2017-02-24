@@ -6,19 +6,56 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using BrickManagementSystem.Main.Models;
+using BrickManagementSystem.Main.Models.ViewModels;
 
 namespace BrickManagementSystem.Main.Controllers
 {
     public class tblRequisitionFormsController : Controller
     {
         private BrickManagementDBEntities db = new BrickManagementDBEntities();
+        public static List<tblItemInfo> lstItems = new List<tblItemInfo>();
+        public bool IsAllDataObtained = false;
+
+      
+        [HttpPost]
+
+        public ActionResult SaveItems(List<Item> serializedData) {
+        //        
+        var lstItem = serializedData;
+        List<tblItemInfo> lstInnerItems = new List<tblItemInfo>();
+        foreach (var item in lstItem)
+        {
+            tblItemInfo i = new tblItemInfo
+            {
+                ItemName = item.ItemName,
+                KhataNumber = item.KhataNumber,
+                Quantity = Convert.ToInt32(item.Quantity),
+                Unit = item.Unit,
+                Remarks = item.Remarks
+
+            };
+            lstInnerItems.Add(i);
+        }
+        lstItems = lstInnerItems;
+            IsAllDataObtained = true;
+        var result = new { Success = "True", Message = "Error Message" };
+
+        return Json(result, JsonRequestBehavior.AllowGet);
+
+    }
 
         // GET: tblRequisitionForms
         public ActionResult Index()
         {
             var tblRequisitionForms = db.tblRequisitionForms.Include(t => t.mstCompanyInfo);
             return View(tblRequisitionForms.ToList());
+        }
+
+        public ActionResult GetData() {
+            var lstForms = db.tblRequisitionForms.Select(x => new { EmployeeName = x.EmployeeName, Purpose = x.Purpose, RequestedDate = x.RequestedDate.ToString(), CreatedBy = x.CreatedBy, CompanyID=x.mstCompanyInfo.Name });
+            return Json(lstForms , JsonRequestBehavior.AllowGet);
         }
 
         // GET: tblRequisitionForms/Details/5
@@ -41,6 +78,7 @@ namespace BrickManagementSystem.Main.Controllers
         {
 
             ViewBag.CompanyID = new SelectList(db.mstCompanyInfoes, "CompanyID", "Name");
+            ViewBag.Author = "DefaultAuthor";
             return View();
         }
 
@@ -55,7 +93,16 @@ namespace BrickManagementSystem.Main.Controllers
             {
                 db.tblRequisitionForms.Add(tblRequisitionForm);
                 db.SaveChanges();
-                return RedirectToAction("Create", "tblItemInfoes", new { reqID = tblRequisitionForm.ReqID });
+                
+                foreach(tblItemInfo i in lstItems) {
+                        i.ReqID = tblRequisitionForm.ReqID;
+                        db.tblItemInfoes.Add(i);
+
+                }
+                    db.SaveChanges();
+               
+               
+                return RedirectToAction("Index");
             }
 
             ViewBag.CompanyID = new SelectList(db.mstCompanyInfoes, "CompanyID", "Name", tblRequisitionForm.CompanyID);

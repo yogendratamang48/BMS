@@ -7,6 +7,13 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    @*<link href="~/Content/jquery-ui.structure.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery.appendGrid-1.6.2.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-ui-1.11.1.min.js"></script>
+    <script src="~/Scripts/jquery.appendGrid-1.6.2.js"></script>*@
+
 </head>
 <body>
      <div id="wrapper">
@@ -69,7 +76,10 @@
     </footer>
 
     @Scripts.Render("~/bundles/jquery")
+
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/DataTable/DataTable.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -25,7 +25,7 @@ namespace BrickManagementSystem.Main.Models
         public string KhataNumber { get; set; }
         public string ItemName { get; set; }
         public Nullable<decimal> Quantity { get; set; }
-        public Nullable<decimal> Unit { get; set; }
+        public string Unit { get; set; }
         public string Remarks { get; set; }
     
         public virtual tblRequisitionForm tblRequisitionForm { get; set; }

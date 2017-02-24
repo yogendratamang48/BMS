@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "TestCreate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>TestCreate</h2>
+<link href="~/Content/jquery-ui.structure.min.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
+<link href="~/Content/jquery.appendGrid-1.6.2.css" rel="stylesheet" />
+<form action="" method="post">
+    <table id="tblAppendGrid"></table>
+    <br />
+    <button id="btnLoad" type="button">
+       डाटा लोड गर्नुहोस् ।
+    </button>
+    <button id="btnSerialize" type="button">
+       डाटा सुरक्षित गर्नुहोस् ।
+    </button>
+</form>
+@section Scripts{
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.1.min.js"></script>
+<script src="~/Scripts/jquery.appendGrid-1.6.2.js"></script>
+<script id="jsSource" type="text/javascript">
+$(function () {
+    // Initialize appendGrid
+    $('#tblAppendGrid').appendGrid({
+        caption: 'माग गरिएका सामानहरु',
+        initRows: 1,
+        columns: [
+            { name: 'KhataNumber', display: 'खाता नं.', type: 'text', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '150px'} },
+            { name: 'ItemName', display: 'विवरण', type: 'text', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '200px'} },
+            { name: 'Quantity', display: 'परिमाण', type: 'text', ctrlAttr: { maxlength: 20 }, ctrlCss: { width: '50px', 'text-align': 'right' }, value: 0 },
+            { name: 'Unit', display: 'एकाई', type: 'select', ctrlOptions: { 0: '{Choose}', 1: 'ओटा', 2: 'थान', 3: 'दर्जन', 4: 'किलो', 5: 'मिटर', 6: 'अन्य' }, ctrlAttr: { maxlength: 50 } },
+            { name: 'Remarks', display: 'कैफियत', type: 'text', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '200px' } }
+        ]
+    });
+    // Handle `Load` button click
+    $('#btnLoad').button().click(function () {
+        $('#tblAppendGrid').appendGrid('load', [
+            { 'Album': 'Dearest', 'Artist': 'Theresa Fu', 'Year': '2009', 'Origin': 1, 'Poster': true, 'Price': 168.9, 'RecordId': 123 },
+            { 'Album': 'To be Free', 'Artist': 'Arashi', 'Year': '2010', 'Origin': 3, 'Poster': true, 'Price': 152.6, 'RecordId': 125 },
+            { 'Album': 'Count On Me', 'Artist': 'Show Luo', 'Year': '2012', 'Origin': 2, 'Poster': false, 'Price': 306.8, 'RecordId': 127 },
+            { 'Album': 'Wonder Party', 'Artist': 'Wonder Girls', 'Year': '2012', 'Origin': 4, 'Poster': true, 'Price': 108.6, 'RecordId': 129 },
+            { 'Album': 'Reflection', 'Artist': 'Kelly Chen', 'Year': '2013', 'Origin': 1, 'Poster': false, 'Price': 138.2, 'RecordId': 131 }
+        ]);
+    });
+    // Handle `Serialize` button click
+    $('#btnSerialize').button().click(function () {
+        alert('Here is the serialized data!!\n' + $(document.forms[0]).serialize());
+    });
+
+
+});
+</script>
+}
+

@@ -17,9 +17,9 @@ namespace BrickManagementSystem.Main.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblRequisitionForm()
         {
-            this.tblItemInfoes = new HashSet<tblItemInfo>();
             this.tblStocks = new HashSet<tblStock>();
             this.IncomingDemands = new HashSet<IncomingDemand>();
+            this.tblItemInfoes = new HashSet<tblItemInfo>();
         }
     
         public int ReqID { get; set; }
@@ -31,10 +31,10 @@ namespace BrickManagementSystem.Main.Models
     
         public virtual mstCompanyInfo mstCompanyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblItemInfo> tblItemInfoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblStock> tblStocks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IncomingDemand> IncomingDemands { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblItemInfo> tblItemInfoes { get; set; }
     }
 }

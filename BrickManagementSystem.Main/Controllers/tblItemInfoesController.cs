@@ -35,7 +35,10 @@ namespace BrickManagementSystem.Main.Controllers
             }
             return View(tblItemInfo);
         }
+        public ActionResult Save(string itemData) {
 
+            return View();
+        }
         // GET: tblItemInfoes/Create
         public ActionResult Create(int? reqID)
         {
@@ -78,63 +81,7 @@ namespace BrickManagementSystem.Main.Controllers
             var lstItems = db.tblItemInfoes.Where(m => m.ReqID == reqID).ToList();
             return PartialView("ShowItems", lstItems);
         }
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tblItemInfo tblItemInfo = db.tblItemInfoes.Find(id);
-            if (tblItemInfo == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ReqID = new SelectList(db.tblRequisitionForms, "ReqID", "EmployeeName", tblItemInfo.ReqID);
-            return View(tblItemInfo);
-        }
-
-        // POST: tblItemInfoes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ItemID,ReqID,KhataNumber,ItemName,Quantity,Unit,Remarks")] tblItemInfo tblItemInfo)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(tblItemInfo).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ReqID = new SelectList(db.tblRequisitionForms, "ReqID", "EmployeeName", tblItemInfo.ReqID);
-            return View(tblItemInfo);
-        }
-
-        // GET: tblItemInfoes/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tblItemInfo tblItemInfo = db.tblItemInfoes.Find(id);
-            if (tblItemInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblItemInfo);
-        }
-
-        // POST: tblItemInfoes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            tblItemInfo tblItemInfo = db.tblItemInfoes.Find(id);
-            db.tblItemInfoes.Remove(tblItemInfo);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+       
 
         protected override void Dispose(bool disposing)
         {

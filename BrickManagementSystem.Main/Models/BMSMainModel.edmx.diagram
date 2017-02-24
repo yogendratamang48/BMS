@@ -6,16 +6,16 @@
     <edmx:Diagrams>
       <Diagram DiagramId="cd8c87328848436489c87fe5b20d1a21" Name="Diagram1">
         <EntityTypeShape EntityType="BrickManagementDBModel.mstCompanyInfo" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BrickManagementDBModel.tblItemInfo" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BrickManagementDBModel.tblItemsFromStock" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BrickManagementDBModel.tblRequisitionForm" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BrickManagementDBModel.tblStock" Width="1.5" PointX="5.25" PointY="4.625" IsExpanded="true" />
         <AssociationConnector Association="BrickManagementDBModel.FK_tblRequisitionForm_ToCompanyInfo" ManuallyRouted="false" />
-        <AssociationConnector Association="BrickManagementDBModel.FK_tblItemInfo_ToReq" ManuallyRouted="false" />
-        <AssociationConnector Association="BrickManagementDBModel.FK_tblItemsFromStock_ToTable" ManuallyRouted="false" />
         <AssociationConnector Association="BrickManagementDBModel.FK_tblStock_ToReq" ManuallyRouted="false" />
         <EntityTypeShape EntityType="BrickManagementDBModel.IncomingDemand" Width="1.5" PointX="5.25" PointY="8.375" />
         <AssociationConnector Association="BrickManagementDBModel.FK_Table_ToTable" />
+        <EntityTypeShape EntityType="BrickManagementDBModel.tblItemInfo" Width="1.5" PointX="5.25" PointY="1" />
+        <AssociationConnector Association="BrickManagementDBModel.FK_tblItemInfo_ToReq" />
+        <AssociationConnector Association="BrickManagementDBModel.FK_tblItemsFromStock_ToTable" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

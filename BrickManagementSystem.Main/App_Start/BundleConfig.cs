@@ -31,6 +31,7 @@ namespace BrickManagementSystem.Main
                       "~/Content/bootstrap.css",
                       "~/Content/custom.css",
                       "~/Content/font-awesome.css"));
+
         }
     }
 }
